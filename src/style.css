@@ -4,3 +4,10 @@
 @media(max-width:760px){.topbar{height:65px;padding:0 18px}.top-pill{font-size:10px;padding:7px 10px}.main-wrap{padding:38px 17px 20px}.hero{margin-bottom:27px}.hero p{font-size:13px;max-width:440px;margin:auto}.workspace{grid-template-columns:1fr}.calculator-card,.result-card{padding:22px}.result-card{min-height:270px}.steps-section,.history-section{margin-top:40px}.steps-grid{grid-template-columns:1fr;gap:10px}.step-card{padding:18px}.step-hindi{min-height:0}.section-title-row h2{font-size:19px}.history-heading{align-items:flex-start;gap:14px;flex-direction:column}.history-tools{width:100%}.history-tools button{flex:1}.footer-right{display:none}footer{margin-top:38px}.final-amount{font-size:40px}}
 @media(max-width:380px){.top-pill{font-size:0}.top-pill .live-dot{margin:0}.main-wrap{padding-left:13px;padding-right:13px}.calculator-card,.result-card{padding:19px}.result-actions{flex-direction:column}.btn-primary,.btn-ghost{width:100%}.final-amount{font-size:35px}}
 @media print{body{background:#fff}.topbar,.history-section,footer,.result-actions,.save-button,.input-hint,.rule-note{display:none!important}.main-wrap{padding:10px;max-width:none}.workspace{grid-template-columns:1fr 1fr}.calculator-card,.result-card,.step-card{box-shadow:none;break-inside:avoid}.steps-section{margin-top:25px}.steps-grid{grid-template-columns:repeat(3,1fr)}.hero{margin-bottom:20px}.step-card{padding:12px}.math-line{white-space:normal}}
+
+.instruction-panel{background:#fff;border:1px solid #e4eaf2;border-left:4px solid #17a77b;border-radius:14px;padding:20px 24px;margin:0 0 16px;box-shadow:0 5px 20px #1b2d5008}
+.instruction-panel h3{font-family:'Hind',sans-serif;font-size:17px;color:#1c2941;margin:0 0 9px}
+.instruction-panel ol{margin:0;padding-left:22px;display:grid;gap:8px;font-family:'Hind',sans-serif;font-size:12px;line-height:1.75;color:#6f7c91}
+.instruction-panel li::marker{color:#13a879;font-weight:700}
+.instruction-panel li b{color:#34425a}
+.instruction-example{margin:14px 0 0;background:#eff8f4;border-radius:8px;padding:11px 13px;font-family:'Hind',sans-serif;font-size:11px;line-height:1.7;color:#347c66}
