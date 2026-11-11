@@ -48,6 +48,14 @@ function App(){
  <li><b>दशमलव नियम:</b> पहले 13% की राशि के अलावा कोई भी रकम whole rupee में round नहीं होगी। दूसरे चरण से final result तक हर value दो decimal places में दिखाई जाएगी।</li>
  <li><b>हिस्ट्री सेव करें:</b> “हिस्ट्री में सेव करें” दबाने पर calculation इसी browser में सुरक्षित होगी। CSV Export से हिस्ट्री डाउनलोड कर सकते हैं।</li>
  </ol><p className="instruction-example">उदाहरण: ₹10,000 पर 13% = ₹1,300.00 (rounded), नया total ₹11,300.00; 10% = ₹1,000.00, total ₹12,300.00; 18% = ₹2,214.00, final ₹14,514.00.</p></div>
+ <div className="instruction-panel"><h3>कैलकुलेशन कैसे करें?</h3><ol>
+ <li><b>मूल राशि डालें:</b> ऊपर दिए गए बॉक्स में अपनी रकम लिखें। आप दशमलव राशि भी डाल सकते हैं।</li>
+ <li><b>पहला चरण — 13%:</b> सिस्टम मूल राशि का 13% निकालेगा और केवल इसी 13% की राशि को पूरे रुपये में round करेगा। फिर इसे मूल राशि में जोड़ देगा।</li>
+ <li><b>दूसरा चरण — 10%:</b> 10% हमेशा शुरुआती मूल राशि से निकलेगा, पहले चरण के total से नहीं। इस राशि को पहले चरण के updated total में जोड़ा जाएगा।</li>
+ <li><b>तीसरा चरण — 18%:</b> 18% दूसरे चरण के updated total से निकलेगा और उसी total में जोड़ा जाएगा।</li>
+ <li><b>दशमलव नियम:</b> पहले 13% की राशि के अलावा कोई भी रकम whole rupee में round नहीं होगी। दूसरे चरण से final result तक हर value दो decimal places में दिखाई जाएगी।</li>
+ <li><b>हिस्ट्री सेव करें:</b> “हिस्ट्री में सेव करें” दबाने पर calculation इसी browser में सुरक्षित होगी। CSV Export से हिस्ट्री डाउनलोड कर सकते हैं।</li>
+ </ol><p className="instruction-example">उदाहरण: ₹10,000 पर 13% = ₹1,300.00 (rounded), नया total ₹11,300.00; 10% = ₹1,000.00, total ₹12,300.00; 18% = ₹2,214.00, final ₹14,514.00.</p></div>
  <div className="steps-grid">
  <article className="step-card"><div className="step-head"><span className="step-number">01</span><span className="percent-chip">+13%</span></div><h3>पहले 13% जोड़ें</h3><p className="step-hindi">मूल राशि का 13% निकालकर मूल राशि में जोड़ें।</p><div className="formula"><span>13% की राशि</span><b>{valid?money(result.p13):"—"}</b></div><div className="formula total"><span>नया कुल</span><b>{valid?money(result.after13):"—"}</b></div><div className="math-line">{valid?`${money(result.original)} + ${money(result.p13)} = ${money(result.after13)}`:"राशि दर्ज करने पर हिसाब दिखेगा"}</div></article>
  <article className="step-card"><div className="step-head"><span className="step-number">02</span><span className="percent-chip">+10%</span></div><h3>फिर 10% जोड़ें</h3><p className="step-hindi">10% फिर से मूल राशि का निकालें और पहले चरण के कुल में जोड़ें।</p><div className="formula"><span>मूल राशि का 10%</span><b>{valid?money(result.p10):"—"}</b></div><div className="formula total"><span>नया कुल</span><b>{valid?money(result.after10):"—"}</b></div><div className="math-line">{valid?`${money(result.after13)} + ${money(result.p10)} = ${money(result.after10)}`:"राशि दर्ज करने पर हिसाब दिखेगा"}</div></article>
