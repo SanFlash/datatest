@@ -2,20 +2,30 @@
 
 Hindi-first responsive percentage calculator built with React and Vite.
 
-## Calculation rules
+## Exact calculation and rounding policy
 
 For an original amount:
 
-1. Calculate 13% of the original amount, round to the nearest whole rupee, add it to the original amount, then round the updated total.
-2. Calculate 10% of the **original amount**, round it, add it to the Step 1 total, then round the updated total.
-3. Calculate 18% of the latest Step 2 total, round it, add it, then round the final total.
+1. Calculate 13% of the original amount. **Round only this 13% amount** to the nearest whole rupee using half-up rounding (50 paise rounds up).
+2. Add that rounded 13% amount to the original amount. Keep the updated total to 2 decimal places.
+3. Calculate 10% from the **original amount**, not from the updated total. Keep the 10% amount and the new updated total to 2 decimal places.
+4. Calculate 18% from the latest Step 2 total. Keep the 18% amount and final total to 2 decimal places.
 
-Rounding is half-up for non-negative amounts: 50 paise rounds up. Both each percentage amount and each updated total are rounded before proceeding.
+No whole-rupee rounding is applied after the first 13% amount. All later values are kept to two decimal places for calculations and display.
+
+## Example
+
+For an original amount of ₹10,000.00:
+
+- 13% = ₹1,300.00 (rounded to a whole rupee); updated total = ₹11,300.00.
+- 10% of the original ₹10,000.00 = ₹1,000.00; updated total = ₹12,300.00.
+- 18% of ₹12,300.00 = ₹2,214.00; final total = **₹14,514.00**.
 
 ## Features
 
-- Live calculation with step-by-step Hindi explanations.
-- Whole-rupee rounding after every stage.
+- Live calculation with detailed Hindi instructions.
+- Only the first 13% amount is rounded to a whole rupee.
+- All subsequent amounts and totals retain two decimal places.
 - Browser-local calculation history (up to 50 recent calculations).
 - Copy result, print/save as PDF, export history as CSV.
 - Responsive mobile and desktop design.
@@ -35,8 +45,6 @@ npm run preview
 ```
 
 ## Vercel
-
-Import this repository into Vercel. Settings:
 
 - Framework: Vite
 - Install command: `npm install`
