@@ -3,13 +3,19 @@ import{createRoot}from"react-dom/client";
 import"./style.css";
 const KEY="hisabpro-history-v1";
 const roundRupee=n=>Math.floor(n+0.5);
-const money=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(n);
+const round2=n=>Math.round((n+Number.EPSILON)*100)/100;
+const money=n=>new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 function calculate(raw){
- const original=Number(raw);if(!Number.isFinite(original)||original<0)return null;
- const p13=roundRupee(original*.13),after13=roundRupee(original+p13);
- const p10=roundRupee(original*.10),after10=roundRupee(after13+p10);
- const p18=roundRupee(after10*.18),final=roundRupee(after10+p18);
- return{original,p13,after13,p10,after10,p18,final,increase:final-original};
+ const original=round2(Number(raw));if(!Number.isFinite(original)||original<0)return null;
+ // Only the 13% amount is rounded to a whole rupee.
+ const p13=roundRupee(original*.13);
+ const after13=round2(original+p13);
+ // From Step 2 onward, retain two decimal places throughout.
+ const p10=round2(original*.10);
+ const after10=round2(after13+p10);
+ const p18=round2(after10*.18);
+ const final=round2(after10+p18);
+ return{original,p13,after13,p10,after10,p18,final,increase:round2(final-original)};
 }
 function App(){
  const[amount,setAmount]=useState("10000");
@@ -29,11 +35,19 @@ function App(){
  <div className="calculator-card"><div className="card-heading"><div><span className="section-kicker">STEP 01</span><h2>शुरुआती राशि दर्ज करें</h2><p>वह मूल रकम डालें जिस पर कैलकुलेशन करना है।</p></div><div className="rupee-icon">₹</div></div>
  <label className="amount-label" htmlFor="amount">मूल राशि (Original Amount)</label><div className="amount-input-wrap"><span>₹</span><input id="amount" inputMode="decimal" type="number" min="0" step="any" placeholder="जैसे 10000" value={amount} onChange={e=>setAmount(e.target.value)} onKeyDown={e=>{if(e.key==="-"||e.key==="e")e.preventDefault()}}/></div>
  <div className="input-hint"><span className="hint-dot"/>केवल शून्य या उससे बड़ी राशि दर्ज करें।</div>{!valid&&amount.trim()!==""&&<div className="error-text">कृपया एक सही और शून्य से बड़ी राशि दर्ज करें।</div>}
- <div className="rule-note"><span className="note-icon">↗</span><span><b>Rounding rule:</b> हर प्रतिशत की राशि और नया कुल, अगले चरण से पहले नज़दीकी पूरे रुपये में राउंड होगा। 50 पैसे या उससे अधिक होने पर अगला रुपया माना जाएगा।</span></div></div>
+ <div className="rule-note"><span className="note-icon">↗</span><span><b>नया rounding rule:</b> केवल पहले चरण में 13% की निकली हुई राशि को नज़दीकी पूरे रुपये में राउंड किया जाएगा। इसके बाद सभी रकम और totals दो दशमलव (जैसे ₹1,234.56) तक रखे जाएँगे।</span></div></div>
  <div className="result-card"><div className="result-top"><div><span className="section-kicker light">YOUR FINAL AMOUNT</span><h2>अंतिम राशि</h2></div><span className="result-check">✓</span></div><div className="final-amount">{valid?money(result.final):"₹ —"}</div><div className="result-caption">तीनों चरण पूरे होने के बाद</div><div className="result-divider"/>
  <div className="result-stats"><div><span>मूल राशि</span><b>{valid?money(result.original):"—"}</b></div><div><span>कुल बढ़ोतरी</span><b className="gain">{valid?"+ "+money(result.increase):"—"}</b></div></div>
  <div className="result-actions"><button className="btn-primary" onClick={copy} disabled={!valid}>{copied?"✓ कॉपी हो गया":"↗ परिणाम कॉपी करें"}</button><button className="btn-ghost" onClick={()=>window.print()} disabled={!valid}>प्रिंट / PDF</button></div><button className="save-button" onClick={save} disabled={!valid}>＋ हिस्ट्री में सेव करें</button></div></section>
  <section className="steps-section"><div className="section-title-row"><div><span className="section-kicker">CALCULATION BREAKDOWN</span><h2>पूरा हिसाब, चरण-दर-चरण</h2><p>हर प्रतिशत मूल राशि या पिछले अपडेटेड टोटल पर कैसे लागू हुआ, यहाँ देखें।</p></div><span className="steps-badge">3 STEPS</span></div>
+ <div className="instruction-panel"><h3>कैलकुलेशन कैसे करें?</h3><ol>
+ <li><b>मूल राशि डालें:</b> ऊपर दिए गए बॉक्स में अपनी रकम लिखें। आप दशमलव राशि भी डाल सकते हैं।</li>
+ <li><b>पहला चरण — 13%:</b> सिस्टम मूल राशि का 13% निकालेगा और केवल इसी 13% की राशि को पूरे रुपये में round करेगा। फिर इसे मूल राशि में जोड़ देगा।</li>
+ <li><b>दूसरा चरण — 10%:</b> 10% हमेशा शुरुआती मूल राशि से निकलेगा, पहले चरण के total से नहीं। इस राशि को पहले चरण के updated total में जोड़ा जाएगा।</li>
+ <li><b>तीसरा चरण — 18%:</b> 18% दूसरे चरण के updated total से निकलेगा और उसी total में जोड़ा जाएगा।</li>
+ <li><b>दशमलव नियम:</b> पहले 13% की राशि के अलावा कोई भी रकम whole rupee में round नहीं होगी। दूसरे चरण से final result तक हर value दो decimal places में दिखाई जाएगी।</li>
+ <li><b>हिस्ट्री सेव करें:</b> “हिस्ट्री में सेव करें” दबाने पर calculation इसी browser में सुरक्षित होगी। CSV Export से हिस्ट्री डाउनलोड कर सकते हैं।</li>
+ </ol><p className="instruction-example">उदाहरण: ₹10,000 पर 13% = ₹1,300.00 (rounded), नया total ₹11,300.00; 10% = ₹1,000.00, total ₹12,300.00; 18% = ₹2,214.00, final ₹14,514.00.</p></div>
  <div className="steps-grid">
  <article className="step-card"><div className="step-head"><span className="step-number">01</span><span className="percent-chip">+13%</span></div><h3>पहले 13% जोड़ें</h3><p className="step-hindi">मूल राशि का 13% निकालकर मूल राशि में जोड़ें।</p><div className="formula"><span>13% की राशि</span><b>{valid?money(result.p13):"—"}</b></div><div className="formula total"><span>नया कुल</span><b>{valid?money(result.after13):"—"}</b></div><div className="math-line">{valid?`${money(result.original)} + ${money(result.p13)} = ${money(result.after13)}`:"राशि दर्ज करने पर हिसाब दिखेगा"}</div></article>
  <article className="step-card"><div className="step-head"><span className="step-number">02</span><span className="percent-chip">+10%</span></div><h3>फिर 10% जोड़ें</h3><p className="step-hindi">10% फिर से मूल राशि का निकालें और पहले चरण के कुल में जोड़ें।</p><div className="formula"><span>मूल राशि का 10%</span><b>{valid?money(result.p10):"—"}</b></div><div className="formula total"><span>नया कुल</span><b>{valid?money(result.after10):"—"}</b></div><div className="math-line">{valid?`${money(result.after13)} + ${money(result.p10)} = ${money(result.after10)}`:"राशि दर्ज करने पर हिसाब दिखेगा"}</div></article>
