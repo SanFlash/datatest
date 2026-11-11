@@ -11,3 +11,57 @@
 .instruction-panel li::marker{color:#13a879;font-weight:700}
 .instruction-panel li b{color:#34425a}
 .instruction-example{margin:14px 0 0;background:#eff8f4;border-radius:8px;padding:11px 13px;font-family:'Hind',sans-serif;font-size:11px;line-height:1.7;color:#347c66}
+
+/* Readability improvements: larger labels, instructions, formulas and supporting text. */
+.top-pill{font-size:14px}
+.eyebrow,.section-kicker{font-size:12px}
+.hero p{font-size:17px}
+.card-heading h2,.result-top h2{font-size:23px}
+.card-heading p,.section-title-row p{font-size:14px}
+.amount-label{font-size:15px}
+.amount-input-wrap input{font-size:28px}
+.input-hint,.error-text{font-size:13px}
+.rule-note{font-size:14px;line-height:1.75;padding:14px 15px}
+.final-amount{font-size:clamp(38px,4.5vw,47px)}
+.result-caption{font-size:14px}
+.result-stats span{font-size:13px}
+.result-stats b{font-size:16px}
+.btn-primary,.btn-ghost{font-size:14px;padding:13px 15px}
+.save-button{font-size:14px;padding:12px}
+.section-title-row h2{font-size:25px}
+.steps-badge{font-size:12px}
+.step-number{font-size:12px}
+.percent-chip{font-size:13px}
+.step-card h3{font-size:20px}
+.step-hindi{font-size:14px;line-height:1.75;min-height:48px}
+.formula{font-size:14px}
+.formula b{font-size:15px}
+.formula.total b{font-size:17px}
+.math-line{font-size:13px;padding:10px}
+.small-btn{font-size:13px;padding:10px 12px}
+th{font-size:12px}
+td{font-size:14px}
+.reopen-btn{font-size:12px}
+.empty-history{font-size:14px}
+.empty-history b{font-size:15px}
+footer{font-size:12px}
+.footer-brand{font-size:14px}
+.instruction-panel{padding:22px 25px}
+.instruction-panel h3{font-size:21px}
+.instruction-panel ol{font-size:14px;line-height:1.8;gap:9px}
+.instruction-example{font-size:13px;line-height:1.8}
+@media(max-width:760px){
+ .hero p{font-size:15px}
+ .top-pill{font-size:12px}
+ .card-heading h2,.result-top h2{font-size:22px}
+ .section-title-row h2{font-size:22px}
+ .step-hindi{min-height:0}
+ .final-amount{font-size:40px}
+ .instruction-panel{padding:18px}
+ .instruction-panel h3{font-size:19px}
+ .instruction-panel ol{font-size:14px}
+}
+@media(max-width:380px){
+ .rule-note,.instruction-panel ol,.step-hindi{font-size:13px}
+ .final-amount{font-size:36px}
+}
